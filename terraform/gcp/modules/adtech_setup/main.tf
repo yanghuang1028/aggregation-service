@@ -119,7 +119,7 @@ resource "google_service_account" "worker_service_account" {
 }
 
 resource "google_project_iam_custom_role" "deploy_custom_role" {
-  project     = var.project
+  project     = "ecs-1709881683838"
   role_id     = var.deploy_sa_role_name
   title       = "Deploy Custom Role"
   description = "Roles for deploying Aggregation Service"
@@ -127,7 +127,7 @@ resource "google_project_iam_custom_role" "deploy_custom_role" {
 }
 
 resource "google_project_iam_custom_role" "worker_custom_role" {
-  project     = var.project
+  project     = "ecs-1709881683838"
   role_id     = var.worker_sa_role_name
   title       = "Worker Custom Role"
   description = "Roles for Aggregation Service worker"
@@ -146,10 +146,10 @@ resource "google_project_iam_member" "worker_service_account_role" {
   project = var.project
 }
 
-resource "google_service_account_iam_policy" "deploy_token_creator_policy" {
-  service_account_id = "projects/${var.project}/serviceAccounts/${local.deploy_service_account}"
-  policy_data        = data.google_iam_policy.policy_token_create.policy_data
-}
+# resource "google_service_account_iam_policy" "deploy_token_creator_policy" {
+  # service_account_id = "projects/${var.project}/serviceAccounts/${local.deploy_service_account}"
+  # policy_data        = data.google_iam_policy.policy_token_create.policy_data
+# }
 
 resource "google_artifact_registry_repository" "artifact_repo" {
   count         = var.artifact_repo_name != "" ? 1 : 0

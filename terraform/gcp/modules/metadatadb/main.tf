@@ -20,7 +20,7 @@ resource "google_spanner_instance" "metadatadb_instance" {
   display_name     = "${var.environment}-jobmd"
   config           = var.spanner_instance_config
   processing_units = var.spanner_processing_units
-
+  project = var.project_id
   labels = {
     environment = var.environment
   }

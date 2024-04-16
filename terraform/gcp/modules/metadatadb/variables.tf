@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+variable "project_id" {
+  description = "GCP Project ID in which this module will be created."
+  type        = string
+}
+
 variable "environment" {
   type        = string
   description = "Environment where this service is deployed (e.g. dev, prod)."

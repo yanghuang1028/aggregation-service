@@ -19,10 +19,11 @@ locals {
   cloudfunction_package_zip = "${var.frontend_service_jar}.zip"
 }
 
-resource "google_service_account" "frontend_service_account" {
+data "google_service_account" "frontend_service_account" {
   # Service account id has a 30 character limit
+  project  = "microsites-sa"
   account_id   = "${var.environment}-frontend"
-  display_name = "Frontend Service Account"
+  # display_name = "Frontend Service Account"
 }
 
 # Archives the JAR in a ZIP file
@@ -59,7 +60,7 @@ resource "google_cloudfunctions2_function" "frontend_service_cloudfunction" {
     max_instance_count            = var.frontend_service_cloudfunction_max_instances
     timeout_seconds               = var.frontend_service_cloudfunction_timeout_sec
     available_memory              = "${var.frontend_service_cloudfunction_memory_mb}M"
-    service_account_email         = google_service_account.frontend_service_account.email
+    service_account_email         = data.google_service_account.frontend_service_account.email
     vpc_connector                 = var.vpc_connector_id
     vpc_connector_egress_settings = var.vpc_connector_id == null ? null : "ALL_TRAFFIC"
     environment_variables = {
@@ -83,12 +84,12 @@ resource "google_spanner_database_iam_member" "frontend_service_jobmetadatadb_ia
   instance = var.spanner_instance_name
   database = var.spanner_database_name
   role     = "roles/spanner.databaseUser"
-  member   = "serviceAccount:${google_service_account.frontend_service_account.email}"
+  member   = "serviceAccount:${data.google_service_account.frontend_service_account.email}"
 }
 
 # JobMetadata read/write permissions
 resource "google_pubsub_topic_iam_member" "frontend_service_jobqueue_iam" {
   role   = "roles/pubsub.publisher"
-  member = "serviceAccount:${google_service_account.frontend_service_account.email}"
+  member = "serviceAccount:${data.google_service_account.frontend_service_account.email}"
   topic  = var.job_queue_topic
 }
