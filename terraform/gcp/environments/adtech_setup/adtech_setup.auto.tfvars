@@ -27,8 +27,8 @@ service_account_token_creator_list = ["user:sa-aggregation-service@microsites-sa
 
 # [1] Uncomment below lines if you like Terraform grant needed permissions to
 # pre-existing service accounts
-deploy_service_account_email = "sa-aggregation-service@microsites-sa.iam.gserviceaccount.com"
-worker_service_account_email = "worker-sa-aggregation-service@microsites-sa.iam.gserviceaccount.com"
+deploy_service_account_email = "sa-aggregation-service@ecs-1709881683838.iam.gserviceaccount.com"
+worker_service_account_email = "sa-worker-aggregation-service@ecs-1709881683838.iam.gserviceaccount.com"
 
 # [2] Uncomment below lines if you like Terraform to create service accounts
 # and needed permissions granted e.g "deploy-sa" or "worker-sa"
